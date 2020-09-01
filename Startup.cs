@@ -70,8 +70,11 @@ namespace Mmt.Api
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             //configuring the connection string of mysql db
+            //services.AddDbContext<MmtContext>(options =>
+            //       options.UseMySql(Configuration.GetConnectionString("Mmt")));
+
             services.AddDbContext<MmtContext>(options =>
-                   options.UseMySql(Configuration.GetConnectionString("Mmt")));
+       options.UseSqlServer(Configuration.GetConnectionString("Mmt")));
 
             //adding identity to mmt project, this package from miscrosoft wil help us manage the authentication and authorization of application users
             services.AddIdentity<MmtUser, IdentityRole>(option =>

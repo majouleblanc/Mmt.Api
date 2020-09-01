@@ -15,8 +15,7 @@ namespace Mmt.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "DIRECTOR")]
-    [AllowAnonymous]
+    [Authorize(Roles = "DIRECTOR")]
     public class MmtUserController : ControllerBase
     {
         private readonly UserManager<MmtUser> _UserManager;
