@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/mmtapp/databases/mmtDb",
+      "type": "mssql.azure",
+      "connectionId": "Mmt",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}

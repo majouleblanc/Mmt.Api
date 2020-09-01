@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Mmt.Api.Models.Comment" Collapsed="true">
+    <Position X="3.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAQAACAAAAAAAAAAAAAAAABAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Models\Comment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mmt.Api.Models.CuriosityLike" Collapsed="true">
+    <Position X="3" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAABAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Models\CuriosityLike.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mmt.Api.Models.Log" Collapsed="true">
+    <Position X="3.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAKAAAAAOAAAAAAEEAIAAAAAABAAAAAAQAAAAAAAAg=</HashCode>
+      <FileName>Models\Log.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mmt.Api.Models.MmtContext" Collapsed="true">
+    <Position X="3.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAABAQAAAAACAAAAAAAgAAEAAAAAAAAAAAAAEAIAA=</HashCode>
+      <FileName>Models\MmtContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mmt.Api.Controllers.CommentsController" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAQAAABAAABAAAAAAAAAAAQAAAQAAAAAgCAAAgAAA=</HashCode>
+      <FileName>Controllers\CommentsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mmt.Api.Controllers.CuriositiesController" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABCAAAAAQAAAgAAAAAAAEAgCAQAAgAAI=</HashCode>
+      <FileName>Controllers\CuriositiesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mmt.Api.Controllers.CuriosityLikesController" Collapsed="true">
+    <Position X="5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAABAAAAEAAAAACAACAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\CuriosityLikesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mmt.Api.Controllers.LogsController" Collapsed="true">
+    <Position X="5.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAEAAABAAAAAECAIAAAAAAAAAAAAAAIAAgAAA=</HashCode>
+      <FileName>Controllers\LogsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mmt.Api.Models.Curiosity">
+    <Position X="9.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACABAAgEAgACAIAAAIAAQAKAYAABAAAQAAAgAAIAI=</HashCode>
+      <FileName>Models\Curiosity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mmt.Api.Models.MmtUser">
+    <Position X="5.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAEAAAAAAAEAIIAAAAAIAAAIAAAAAAAIAAAAAAAg=</HashCode>
+      <FileName>Models\MmtUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mmt.Api.DTO.MmtUser.MmtUserPutDTO">
+    <Position X="1" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAEAAACAAAEAIIAAAAAIAAgIAAACCAQIAAAAAIAg=</HashCode>
+      <FileName>DTO\MmtUser\MmtUserPutDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mmt.Api.Models.TourCuriosity">
+    <Position X="11.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAIAAAAABAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Models\TourCuriosity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mmt.Api.Models.Tour">
+    <Position X="13.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAgEAgAAAIAAAIAAQAKAIAABAAAQAAAgAAAAA=</HashCode>
+      <FileName>Models\Tour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
