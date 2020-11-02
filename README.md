@@ -1,5 +1,5 @@
 # Mmt.Api
-Stage/Werk Project
+Stage/Work Project For a Tourism company to allow hotels, schools and organisation to organize city tours.
 
 <a href="https://mmt-api.azurewebsites.net/swagger/index.html" target="_blank">Click here to visit the Live Version of the Api</a> 
 
