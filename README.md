@@ -8,6 +8,7 @@ Stage/Work Project For a Tourism company to allow hotels, schools and organisati
   <li>C#</li>
   <li>Asp Net Core</li>
   <li>Entity Framework Core</li>
+  <li>sendgrid Email Services to send confirmation emails and email in general to users</li>
   <li>Azure MS SQL server</li>
   <li>Azure Web Services</li>
   <li>Azure Web Storage For Files</li>
