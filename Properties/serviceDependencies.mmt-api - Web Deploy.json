@@ -5,6 +5,24 @@
       "type": "mssql.azure",
       "connectionId": "Mmt",
       "secretStore": "AzureAppSettings"
+    },
+    "storage1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/mmtapi",
+      "type": "storage.azure",
+      "connectionId": "DefaultEndpointsProtocol=https;AccountName=mmtapi;AccountKey=WNss7bt5duCuA5srpda26uQ6PLz2FAdJHnV2kAO1Kkkww+fvqP+YS6+cosEvgPZFxB5loCgf3qqQw76JJ5DVlw==;EndpointSuffix=core.windows.net",
+      "secretStore": "AzureAppSettings"
+    },
+    "secrets1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.KeyVault/vaults/MmtApivault",
+      "type": "secrets.keyVault",
+      "connectionId": "VaultUri",
+      "secretStore": "AzureAppSettings"
+    },
+    "storage2": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/mmtapi",
+      "type": "storage.azure",
+      "connectionId": "AzureStorage",
+      "secretStore": "AzureAppSettings"
     }
   }
 }

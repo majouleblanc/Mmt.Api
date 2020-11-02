@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Mmt.Api.DTO.Tours;
 using Mmt.Api.Models;
+using Mmt.Api.services;
 
 namespace Mmt.Api.Controllers
 {
@@ -21,12 +22,14 @@ namespace Mmt.Api.Controllers
         private readonly MmtContext _context;
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly IConfiguration _Configuration;
+        private readonly IAzureFileService _AzureFileService;
 
-        public ToursController(MmtContext context, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
+        public ToursController(MmtContext context, IWebHostEnvironment webHostEnvironment, IConfiguration configuration, IAzureFileService azureFileService)
         {
             _context = context;
             this.webHostEnvironment = webHostEnvironment;
             _Configuration = configuration;
+            _AzureFileService = azureFileService;
         }
 
        
@@ -84,12 +87,15 @@ namespace Mmt.Api.Controllers
             {
                 if (tour.Image !=null)
                 {
-                    string filePath = Path.Combine(webHostEnvironment.WebRootPath,
-                        "TourImages", tour.Image);
-                    System.IO.File.Delete(filePath);
+                    //string filePath = Path.Combine(webHostEnvironment.WebRootPath,
+                    //    "TourImages", tour.Image);
+                    //System.IO.File.Delete(filePath);
+
+                    await _AzureFileService.DeleteTourImageAsync(tour.Image);
                 }
 
-                tour.Image = ProcessUploadedFile(model);
+                //tour.Image = ProcessUploadedFile(model);
+                tour.Image =await _AzureFileService.ProcessTourImgAsync(model);
             }
 
             tour.City = model.City;
@@ -136,7 +142,8 @@ namespace Mmt.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            string uniqueFileName = ProcessUploadedFile(model);
+            //string uniqueFileName = ProcessUploadedFile(model);
+            string uniqueFileName = await _AzureFileService.ProcessTourImgAsync(model);
 
             Tour tour = new Tour
             {
@@ -176,9 +183,13 @@ namespace Mmt.Api.Controllers
                 return NotFound(ModelState);
             }
 
+            var tourCuriosities = _context.tourCuriosities.Where(tc => tc.Tour == tour).ToArray();
+            _context.tourCuriosities.RemoveRange(tourCuriosities);
+
             if (tour.Image !=null)
             {
-                System.IO.File.Delete(webHostEnvironment.WebRootPath + "//tourImages//" + tour.Image);
+                //System.IO.File.Delete(webHostEnvironment.WebRootPath + "//tourImages//" + tour.Image);
+                await _AzureFileService.DeleteTourImageAsync(tour.Image);
             }
 
             _context.Tours.Remove(tour);

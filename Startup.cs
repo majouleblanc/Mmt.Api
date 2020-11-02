@@ -20,6 +20,10 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Mmt.Api.Models;
 using Mmt.Api.services;
+using Microsoft.Extensions.Azure;
+using Azure.Storage.Queues;
+using Azure.Storage.Blobs;
+using Azure.Core.Extensions;
 
 namespace Mmt.Api
 {
@@ -157,6 +161,12 @@ namespace Mmt.Api
 
             //adding the mailService to DI container
             services.AddTransient<IMailService, MailService>();
+            services.AddTransient<IAzureFileService, AzureFileService>();
+            services.AddAzureClients(builder =>
+            {
+                builder.AddBlobServiceClient(Configuration["ConnectionStrings:DefaultEndpointsProtocol=https;AccountName=mmtapi;AccountKey=WNss7bt5duCuA5srpda26uQ6PLz2FAdJHnV2kAO1Kkkww+fvqP+YS6+cosEvgPZFxB5loCgf3qqQw76JJ5DVlw==;EndpointSuffix=core.windows.net:blob"], preferMsi: true);
+                builder.AddQueueServiceClient(Configuration["ConnectionStrings:DefaultEndpointsProtocol=https;AccountName=mmtapi;AccountKey=WNss7bt5duCuA5srpda26uQ6PLz2FAdJHnV2kAO1Kkkww+fvqP+YS6+cosEvgPZFxB5loCgf3qqQw76JJ5DVlw==;EndpointSuffix=core.windows.net:queue"], preferMsi: true);
+            });
 
         }
 
@@ -193,6 +203,31 @@ namespace Mmt.Api
             {
                 endpoints.MapControllers();
             });
+        }
+    }
+    internal static class StartupExtensions
+    {
+        public static IAzureClientBuilder<BlobServiceClient, BlobClientOptions> AddBlobServiceClient(this AzureClientFactoryBuilder builder, string serviceUriOrConnectionString, bool preferMsi)
+        {
+            if (preferMsi && Uri.TryCreate(serviceUriOrConnectionString, UriKind.Absolute, out Uri serviceUri))
+            {
+                return builder.AddBlobServiceClient(serviceUri);
+            }
+            else
+            {
+                return builder.AddBlobServiceClient(serviceUriOrConnectionString);
+            }
+        }
+        public static IAzureClientBuilder<QueueServiceClient, QueueClientOptions> AddQueueServiceClient(this AzureClientFactoryBuilder builder, string serviceUriOrConnectionString, bool preferMsi)
+        {
+            if (preferMsi && Uri.TryCreate(serviceUriOrConnectionString, UriKind.Absolute, out Uri serviceUri))
+            {
+                return builder.AddQueueServiceClient(serviceUri);
+            }
+            else
+            {
+                return builder.AddQueueServiceClient(serviceUriOrConnectionString);
+            }
         }
     }
 }

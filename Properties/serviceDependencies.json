@@ -3,6 +3,18 @@
     "mssql1": {
       "type": "mssql",
       "connectionId": "Mmt"
+    },
+    "storage1": {
+      "type": "storage",
+      "connectionId": "DefaultEndpointsProtocol=https;AccountName=mmtapi;AccountKey=WNss7bt5duCuA5srpda26uQ6PLz2FAdJHnV2kAO1Kkkww+fvqP+YS6+cosEvgPZFxB5loCgf3qqQw76JJ5DVlw==;EndpointSuffix=core.windows.net"
+    },
+    "secrets1": {
+      "type": "secrets",
+      "connectionId": "VaultUri"
+    },
+    "storage2": {
+      "type": "storage",
+      "connectionId": "AzureStorage"
     }
   }
 }

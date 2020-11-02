@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Mmt.Api.Models;
 
 namespace Mmt.Api.Controllers
@@ -16,10 +17,12 @@ namespace Mmt.Api.Controllers
     public class ToursAndCuriositiesManagerController : ControllerBase
     {
         private readonly MmtContext _context;
+        private readonly IConfiguration _Configuration;
 
-        public ToursAndCuriositiesManagerController(MmtContext context)
+        public ToursAndCuriositiesManagerController(MmtContext context, IConfiguration configuration)
         {
             _context = context;
+            _Configuration = configuration;
         }
 
         [HttpGet("GetTourCuriosities/{tourId:int}")]
@@ -36,6 +39,7 @@ namespace Mmt.Api.Controllers
 
             var curiosities = await _context.tourCuriosities.Where(tc => tc.TourId == tourId).Select(c=>c.Curiosity).ToListAsync();
 
+            curiosities.ForEach(c => c.Image = _Configuration["CuriositiesImagePath"] + c.Image);
             return Ok(curiosities);
 
             //var TourCuriosities = await _context.tourCuriosities.Where(tc => tc.TourId == tourId).Include(tc => tc.Curiosity).ToListAsync();

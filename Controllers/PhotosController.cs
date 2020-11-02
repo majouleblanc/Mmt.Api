@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Mmt.Api.DTO.Photo;
 using Mmt.Api.Models;
+using Mmt.Api.services;
 
 namespace Mmt.Api.Controllers
 {
@@ -22,14 +23,17 @@ namespace Mmt.Api.Controllers
         private readonly MmtContext _context;
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly IConfiguration _Configuration;
+        private readonly IAzureFileService _AzureFileService;
 
         public PhotosController(MmtContext context,
             IWebHostEnvironment webHostEnvironment,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IAzureFileService azureFileService)
         {
             _context = context;
             this.webHostEnvironment = webHostEnvironment;
             _Configuration = configuration;
+            _AzureFileService = azureFileService;
         }
 
         // GET: api/Photos
@@ -90,7 +94,8 @@ namespace Mmt.Api.Controllers
                 CuriosityId = photo.CuriosityId,
                 Id = photo.Id,
                 //PhotoUrl = "/uploads/gallery/" + photo.Id + "/" + photo.PhotoPath
-                PhotoUrl = _Configuration["CuriositiesPhotosPath"] + photo.CuriosityId + "/" + photo.PhotoPath
+                //PhotoUrl = _Configuration["CuriositiesPhotosPath"] + photo.CuriosityId + "/" + photo.PhotoPath
+                PhotoUrl = _Configuration["CuriositiesPhotosPath"] + photo.PhotoPath
             };
         }
 
@@ -109,7 +114,9 @@ namespace Mmt.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            string uniqueFileName = ProcessFoto(model);
+            //string uniqueFileName = ProcessFoto(model);
+            string uniqueFileName = await _AzureFileService.ProcessPhotoGalleryForCuriosityAsync(model);
+
             Photo photo = new Photo()
             {
                 CuriosityId = model.CuriosityId,
@@ -150,7 +157,8 @@ namespace Mmt.Api.Controllers
 
             if (photo.PhotoPath != null)
             {
-                System.IO.File.Delete(webHostEnvironment.WebRootPath + "/uploads//gallery/" + photo.CuriosityId + "/" + photo.PhotoPath);
+                //System.IO.File.Delete(webHostEnvironment.WebRootPath + "/uploads//gallery/" + photo.CuriosityId + "/" + photo.PhotoPath);
+                await _AzureFileService.DeleteCuriosityPhotoGalleryAsync(photo.PhotoPath); 
             }
 
 

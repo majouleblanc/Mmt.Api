@@ -21,7 +21,7 @@ namespace Mmt.Api.services
         {
             var apiKey = _Configuration["SendGridApiKey"];
             var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("majouleblanc@hotmail.fr", "youssef");
+            var from = new EmailAddress("majouleblanc@gmail.com", "youssef");
             var to = new EmailAddress(toEmail);
             var msg = MailHelper.CreateSingleEmail(from, to, subject, content, content);
             var response = await client.SendEmailAsync(msg);

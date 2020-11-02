@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Mmt.Api.DTO.Curiosity;
 using Mmt.Api.Models;
+using Mmt.Api.services;
 
 namespace Mmt.Api.Controllers
 {
@@ -22,12 +24,14 @@ namespace Mmt.Api.Controllers
         private readonly MmtContext _context;
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly IConfiguration _Configuration;
+        private readonly IAzureFileService _AzureFileService;
 
-        public CuriositiesController(MmtContext context, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
+        public CuriositiesController(MmtContext context, IWebHostEnvironment webHostEnvironment, IConfiguration configuration, IAzureFileService azureFileService)
         {
             _context = context;
             this.webHostEnvironment = webHostEnvironment;
             _Configuration = configuration;
+            _AzureFileService = azureFileService;
         }
 
          
@@ -115,13 +119,16 @@ namespace Mmt.Api.Controllers
                 ModelState.AddModelError("", $"Curiosity with id : ${id} not found");
                 return NotFound(ModelState);
             }
+
+            string uniqueFileName = "";
             if (model.Image != null)
             {
                 if (curiosity.Image != null)
                 {
-                    string filePath = Path.Combine(webHostEnvironment.WebRootPath,
-                        "images", curiosity.Image);
-                    System.IO.File.Delete(filePath);
+                    await _AzureFileService.DeleteCuriosityImageAsync(curiosity.Image);
+                    //string filePath = Path.Combine(webHostEnvironment.WebRootPath,
+                    //    "images", curiosity.Image);
+                    //System.IO.File.Delete(filePath);
                 }
 
                 //if (model.ExistingImage != null)
@@ -130,8 +137,10 @@ namespace Mmt.Api.Controllers
                 //        "images", model.ExistingImage);
                 //    System.IO.File.Delete(filePath);
                 //}
-                curiosity.Image = ProcessUploadedFile(model);
+                //curiosity.Image = ProcessUploadedFile(model);
+                uniqueFileName = await _AzureFileService.ProcessFotoAsync(model);
 
+                curiosity.Image = uniqueFileName;
             }
             curiosity.City = model.City;
             curiosity.Coordinates = model.Coordinates;
@@ -182,7 +191,8 @@ namespace Mmt.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            string uniqueFileName = ProcessUploadedFile(model);
+            //string uniqueFileName = ProcessUploadedFile(model);
+            string uniqueFileName = await _AzureFileService.ProcessFotoAsync(model);
 
             Curiosity curiosity = new Curiosity
             {
@@ -231,15 +241,24 @@ namespace Mmt.Api.Controllers
                 return NotFound(ModelState);
             }
 
+            var tourCuriosities = _context.tourCuriosities.Where(tc => tc.Curiosity == curiosity).ToArray();
+            _context.tourCuriosities.RemoveRange(tourCuriosities);
+
             if (curiosity.Image != null)
             {
-                System.IO.File.Delete(webHostEnvironment.WebRootPath + "//images//" + curiosity.Image);
+                await _AzureFileService.DeleteCuriosityImageAsync(curiosity.Image);
+                //System.IO.File.Delete(webHostEnvironment.WebRootPath + "//images//" + curiosity.Image);
             }
 
             //removing the photos folder from the uploads/gallery folder
             if (curiosity.Photos != null && curiosity.Photos.Count !=0)
             {
-                System.IO.Directory.Delete(webHostEnvironment.WebRootPath + "//uploads//gallery//" + curiosity.Id, true);
+                //System.IO.Directory.Delete(webHostEnvironment.WebRootPath + "//uploads//gallery//" + curiosity.Id, true);
+                foreach (var photo in curiosity.Photos)
+                {
+                    await _AzureFileService.DeleteCuriosityPhotoGalleryAsync(photo.PhotoPath);
+
+                }
                 _context.Photos.RemoveRange(curiosity.Photos);
             }
 
@@ -255,6 +274,7 @@ namespace Mmt.Api.Controllers
             }
 
 
+      
 
             //removing the entity self from the db
             _context.Curiosities.Remove(curiosity);
@@ -262,6 +282,7 @@ namespace Mmt.Api.Controllers
 
             return curiosity;
         }
+
 
         private bool CuriosityExists(int id)
         {
